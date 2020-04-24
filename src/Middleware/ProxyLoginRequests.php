@@ -3,7 +3,6 @@
 namespace ShabuShabu\Tightrope\Middleware;
 
 use Closure;
-use Illuminate\Auth\Events\Attempting;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Passport\Client;
