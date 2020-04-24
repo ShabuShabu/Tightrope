@@ -24,7 +24,10 @@ class ResetPasswordController
 
         $response = Password::broker()->reset(
             $request->only(
-                'email', 'password', 'password_confirmation', 'token'
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
             ),
             fn($user, $password) => $user->forceFill([
                 'password'       => hash_value($password),

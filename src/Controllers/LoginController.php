@@ -6,8 +6,8 @@ use Carbon\CarbonInterface;
 use Illuminate\Http\{JsonResponse, Response};
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 use function ShabuShabu\Tightrope\{to_camel_case};
+use Symfony\Component\HttpFoundation\Cookie;
 
 class LoginController
 {
@@ -68,9 +68,14 @@ class LoginController
     {
         return new Cookie(
             config('tightrope.refresh_cookie_name'),
-            $refreshToken, $this->tokenValidity(),
-            config('session.path'), config('session.domain'),
-            true, true, false, Cookie::SAMESITE_STRICT
+            $refreshToken,
+            $this->tokenValidity(),
+            config('session.path'),
+            config('session.domain'),
+            true,
+            true,
+            false,
+            Cookie::SAMESITE_STRICT
         );
     }
 
