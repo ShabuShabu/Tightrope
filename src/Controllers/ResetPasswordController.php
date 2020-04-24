@@ -2,6 +2,7 @@
 
 namespace ShabuShabu\Tightrope\Controllers;
 
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\{Request, Response};
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -33,6 +34,8 @@ class ResetPasswordController
         );
 
         if ($response === Password::PASSWORD_RESET) {
+            event(new PasswordReset(auth()->user()));
+
             return response($response, Response::HTTP_OK);
         }
 

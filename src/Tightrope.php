@@ -19,7 +19,7 @@ use ShabuShabu\Tightrope\Controllers\{LoginController,
 
 class Tightrope
 {
-    protected static Closure $logoutUserCallback;
+    protected static Closure $logUserOutCallback;
 
     protected static Closure $registerUserCallback;
 
@@ -62,19 +62,19 @@ class Tightrope
     /**
      * @param Closure $callback
      */
-    public static function loginUserUsing(Closure $callback): void
+    public static function logUserOutUsing(Closure $callback): void
     {
-        static::$logoutUserCallback = $callback;
+        static::$logUserOutCallback = $callback;
     }
 
     /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function logoutUser(Request $request): Response
+    public static function logUserOut(Request $request): Response
     {
-        if (static::$logoutUserCallback) {
-            return call_user_func(static::$logoutUserCallback, $request);
+        if (static::$logUserOutCallback) {
+            return call_user_func(static::$logUserOutCallback, $request);
         }
 
         return response('Logged out', Response::HTTP_OK);

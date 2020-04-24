@@ -3,6 +3,7 @@
 namespace ShabuShabu\Tightrope\Controllers;
 
 use Carbon\CarbonInterface;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\{JsonResponse, Response};
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +29,8 @@ class LoginController
         );
 
         abort_if($content->isEmpty(), Response::HTTP_UNAUTHORIZED);
+
+        event(new Login('api', auth()->user(), false));
 
         if ($this->shouldAddCookie($request)) {
             return response()->json(

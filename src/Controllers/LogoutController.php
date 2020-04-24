@@ -2,6 +2,7 @@
 
 namespace ShabuShabu\Tightrope\Controllers;
 
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\{Request, Response};
 use ShabuShabu\Tightrope\Tightrope;
 
@@ -15,7 +16,9 @@ class LogoutController
      */
     public function __invoke(Request $request): Response
     {
-        $response = Tightrope::logoutUser($request);
+        $response = Tightrope::logUserOut($request);
+
+        event(new Logout('api', $request->user()));
 
         cookie()->queue(
             cookie()->forget(config('tightrope.refresh_cookie_name'))

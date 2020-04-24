@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.4",
+        "ext-json": "*",
         "illuminate/auth": "^7.0",
         "illuminate/http": "^7.0",
         "illuminate/support": "^7.0",
