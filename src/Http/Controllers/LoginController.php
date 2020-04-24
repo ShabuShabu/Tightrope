@@ -1,6 +1,6 @@
 <?php
 
-namespace ShabuShabu\Tightrope\Controllers;
+namespace ShabuShabu\Tightrope\Http\Controllers;
 
 use Carbon\CarbonInterface;
 use Illuminate\Auth\Events\Login;

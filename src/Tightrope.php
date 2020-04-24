@@ -8,7 +8,7 @@ use Illuminate\Http\{Request, Response};
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use RuntimeException;
-use ShabuShabu\Tightrope\Controllers\{LoginController,
+use ShabuShabu\Tightrope\Http\Controllers\{LoginController,
     LogoutController,
     RegisterController,
     ResendVerificationEmailController,

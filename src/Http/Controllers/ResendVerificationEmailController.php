@@ -1,6 +1,6 @@
 <?php
 
-namespace ShabuShabu\Tightrope\Controllers;
+namespace ShabuShabu\Tightrope\Http\Controllers;
 
 use Illuminate\Http\{Request, Response};
 

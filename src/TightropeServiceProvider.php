@@ -3,7 +3,7 @@
 namespace ShabuShabu\Tightrope;
 
 use Illuminate\Support\ServiceProvider;
-use ShabuShabu\Tightrope\Middleware\ProxyLoginRequests;
+use ShabuShabu\Tightrope\Http\Middleware\ProxyLoginRequests;
 
 class TightropeServiceProvider extends ServiceProvider
 {

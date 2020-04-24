@@ -76,18 +76,21 @@ POST /password/resend
 Additionally, the following authenticated routes are present:
 
 ```
-GET /email/verify/{id}
+GET  /email/verify/{id}
 POST /email/resend
 POST /logout
 ```
+
+The `Tightrope::routes` method does accept a closure that you can use to modify the above routes.
+The second argument accepts a options array, that is passed directly to the route group, so you could, for example, add a prefix.
 
 ### Requests
 
 Tightrope comes with two form requests, that you can override via the config:
 
 ```php
-ShabuShabu\Tightrope\Requests\EmailPasswordRequest;
-ShabuShabu\Tightrope\Requests\ResetPasswordRequest;
+ShabuShabu\Tightrope\Http\Requests\EmailPasswordRequest;
+ShabuShabu\Tightrope\Http\Requests\ResetPasswordRequest;
 ```
 
 ### Events

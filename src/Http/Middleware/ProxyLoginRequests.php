@@ -1,9 +1,8 @@
 <?php
 
-namespace ShabuShabu\Tightrope\Middleware;
+namespace ShabuShabu\Tightrope\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\Events\Attempting;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Passport\Client;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ShabuShabu\Tightrope\Requests;
+namespace ShabuShabu\Tightrope\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
