@@ -24,71 +24,67 @@ class ProxyLoginRequests
         $this->request = $request;
 
         if ($this->isRefreshing()) {
-            return $this->handleRefreshToken($next);
+            $this->handleRefreshToken();
+        } elseif ($this->actAsProxy()) {
+            $this->handleAccessToken();
         }
 
-        return $this->handleAccessToken($next);
+        return $next($this->request);
     }
 
     /**
-     * @param \Closure $next
-     * @return mixed
      * @throws \Illuminate\Validation\ValidationException
+     * @return void
      */
-    protected function handleAccessToken(Closure $next)
+    protected function handleAccessToken(): void
     {
-        if (! $this->actAsProxy()) {
-            return $next($this->request);
-        }
-
         if (! auth(config('tightrope.auth_guard'))->once($this->request->only('email', 'password'))) {
             throw ValidationException::withMessages([
                 'login' => 'Your login credentials are incorrect',
             ]);
         }
 
-        if ($client = $this->getClient()) {
-            $fields = [
-                'username'      => $this->request->input('email'),
-                'grant_type'    => 'password',
-                'client_id'     => $client->getAttribute('id'),
-                'client_secret' => $client->getAttribute('secret'),
-            ];
-
-            foreach ($fields as $key => $value) {
-                $this->setJson($key, $value);
-            }
-
-            if (! $this->request->has('scope')) {
-                $this->setJson('scope', '*');
-            }
+        if (! $client = $this->getClient()) {
+            return;
         }
 
-        return $next($this->request);
+        $fields = [
+            'username'      => $this->request->input('email'),
+            'grant_type'    => 'password',
+            'client_id'     => $client->getAttribute('id'),
+            'client_secret' => $client->getAttribute('secret'),
+        ];
+
+        foreach ($fields as $key => $value) {
+            $this->setJson($key, $value);
+        }
+
+        if (! $this->request->has('scope')) {
+            $this->setJson('scope', '*');
+        }
     }
 
     /**
-     * @param \Closure $next
-     * @return mixed
+     * @return void
      */
-    protected function handleRefreshToken(Closure $next)
+    protected function handleRefreshToken(): void
     {
-        if ($client = $this->getClient()) {
-            $this->setJson('client_id', $client->getAttribute('id'));
-            $this->setJson('client_secret', $client->getAttribute('secret'));
-
-            $cookieName = config('tightrope.refresh_cookie_name');
-
-            if ($this->request->hasCookie($cookieName)) {
-                $this->setJson('refresh_token', $this->request->cookie($cookieName));
-            }
-
-            if (! $this->request->has('scope')) {
-                $this->setJson('scope', '*');
-            }
+        if (! $client = $this->getClient()) {
+            return;
         }
 
-        return $next($this->request);
+        $this->setJson('client_id', $client->getAttribute('id'));
+        $this->setJson('client_secret', $client->getAttribute('secret'));
+
+        $cookieName = config('tightrope.refresh_cookie_name');
+
+        if ($this->request->hasCookie($cookieName)) {
+            $this->setJson('refresh_token', $this->request->cookie($cookieName));
+        }
+
+        if (! $this->request->has('scope')) {
+            $this->setJson('scope', '*');
+        }
     }
 
     /**
@@ -110,18 +106,16 @@ class ProxyLoginRequests
     /**
      * Get the official password client
      *
-     * @return \Laravel\Passport\Client
+     * @return \Laravel\Passport\Client|null|mixed
      */
-    protected function getClient(): ?Client
+    protected function getClient()
     {
-        /** @var Client $client */
-        $client = Client::query()
-                        ->where('name', config('tightrope.client_name'))
-                        ->where('password_client', true)
-                        ->oldest()
-                        ->first();
-
-        return $client && ! $client->getAttribute('revoked') ? $client : null;
+        return Client::query()
+                     ->where('name', config('tightrope.client_name'))
+                     ->where('password_client', true)
+                     ->where('revoked', false)
+                     ->oldest()
+                     ->first();
     }
 
     /**
