@@ -3,8 +3,8 @@
 namespace ShabuShabu\Tightrope\Tests\App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Model;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Model
 {
