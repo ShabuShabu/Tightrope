@@ -3,26 +3,29 @@
 namespace ShabuShabu\Tightrope;
 
 use Illuminate\Support\ServiceProvider;
+use ShabuShabu\Tightrope\Http\Middleware\ProxyLoginRequests;
 
 class TightropeServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/tightrope.php' => config_path('tightrope.php'),
+                __DIR__ . '/../config/tightrope.php' => config_path('tightrope.php'),
             ], 'config');
         }
+
+        $this->app['router']->aliasMiddleware('proxy.login', ProxyLoginRequests::class);
     }
 
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/tightrope.php', 'tightrope');
+        $this->mergeConfigFrom(__DIR__ . '/../config/tightrope.php', 'tightrope');
     }
 }

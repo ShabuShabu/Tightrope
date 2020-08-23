@@ -17,10 +17,17 @@
 </p>
 
 
-Opinionated authentication helper for [Laravel Passport](https://laravel.com/docs/7.x/passport)
+Opinionated authentication helper for [Laravel Passport](https://laravel.com/docs/7.x/passport).
+
+Tightrope will give you all the authentication routes you might need for your API.
 
 ## ToDo
 
+- Add tests
+- Ensure that events aren't being fired twice
+- Pull email verification from BTTs
+- Add config descriptions
+- Make repo public
 - Publish to Packagist
 - Journey to the center of Mars
 
@@ -32,11 +39,76 @@ You can install the package via composer (:bangbang: at least once it has been p
 $ composer require shabushabu/tightrope
 ```
 
+To make full use of Tightrope, some setup in the `boot` method of your `AppServiceProvider` is required:
+
+```php
+Tightrope::routes();
+
+Tightrope::registerUserUsing(function (Request $request) {
+    // do your registration thing here, like
+    // validation, saving the user, etc
+});
+```
+
+If you have something special that needs to happen when a user logs out, then use the `Tightrope::logUserOutUsing` method:
+
+```php
+Tightrope::logUserOutUsing(function (Request $request) {
+    // do something with $request->user()
+});
+```
+
 ## Usage
 
-...
+Nothing more really needs to be done, apart from the above, but there are some areas that can be configured.
+
+### Routes
+
+By default the following non-authenticated routes are registered:
+
+```
+POST /register
+POST /login
+POST /password/request
+POST /password/resend
+```
+
+Additionally, the following authenticated routes are present:
+
+```
+GET  /email/verify/{id}
+POST /email/resend
+POST /logout
+```
+
+The `Tightrope::routes` method does accept a closure that you can use to modify the above routes.
+The second argument accepts a options array, that is passed directly to the route group, so you could, for example, add a prefix.
+
+### Requests
+
+Tightrope comes with two form requests, that you can override via the config:
+
+```php
+ShabuShabu\Tightrope\Http\Requests\EmailPasswordRequest;
+ShabuShabu\Tightrope\Http\Requests\ResetPasswordRequest;
+```
+
+### Events
+
+Tightrope fires the following Laravel events:
+
+```php
+Illuminate\Auth\Events\PasswordReset;
+Illuminate\Auth\Events\Attempting;
+Illuminate\Auth\Events\Registered;
+Illuminate\Auth\Events\Verified;
+Illuminate\Auth\Events\Logout;
+Illuminate\Auth\Events\Login;
+```
 
 ## Testing
+
+Tests will be extracted from the original project in due time.
 
 ```
 $ composer test
