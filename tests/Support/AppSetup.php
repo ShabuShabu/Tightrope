@@ -17,11 +17,13 @@ trait AppSetup
         parent::setUp();
 
         $this->loadMigrationsFrom(dirname(__DIR__) . '/App/migrations');
+
         $this->withFactories(dirname(__DIR__) . '/App/factories');
 
         $this->artisan('passport:client', [
             '--password' => true,
             '--name'     => config('tightrope.client_name'),
+            '--provider' => 'users',
         ]);
     }
 

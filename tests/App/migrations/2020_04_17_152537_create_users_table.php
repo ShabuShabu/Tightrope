@@ -13,12 +13,13 @@ class CreateUsersTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', static function(Blueprint $table) {
+        Schema::create('users', static function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('password');
             $table->string('email');
             $table->rememberToken();
+            $table->timestamp('email_verified_at');
             $table->timestamps();
             $table->softDeletes();
         });

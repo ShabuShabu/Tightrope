@@ -12,16 +12,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Passport::routes();
+        Passport::ignoreMigrations();
         Passport::loadKeysFrom(dirname(__DIR__) . '/keys');
 
         Tightrope::routes();
 
-        Tightrope::registerUserUsing(static function(Request $request) {
+        Tightrope::registerUserUsing(static function (Request $request) {
             // do your registration thing here, like
             // validation, saving the user, etc
         });
 
-        Tightrope::logUserOutUsing(static function(Request $request) {
+        Tightrope::logUserOutUsing(static function (Request $request) {
             // do something with $request->user()
         });
     }
