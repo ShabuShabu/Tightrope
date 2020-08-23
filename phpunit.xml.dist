@@ -28,5 +28,7 @@
     </logging>
     <php>
         <env name="DB_CONNECTION" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <env name="APP_KEY" value="AckkSECXIvNK5r28GVkWUAxmbBSjTxmG"/>
     </php>
 </phpunit>

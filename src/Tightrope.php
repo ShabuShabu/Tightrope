@@ -29,8 +29,9 @@ class Tightrope
      */
     public static function routes($callback = null, array $options = []): void
     {
-        $callback = $callback ?: static function(Router $router) {
+        $callback = $callback ?: static function (Router $router) {
             $router->post('register', RegisterController::class)
+                   ->middleware('guest')
                    ->name('register');
 
             $router->post('login', LoginController::class)
@@ -43,7 +44,7 @@ class Tightrope
             $router->post('password/reset', ResetPasswordController::class)
                    ->name('password.reset');
 
-            $router->middleware('auth:api')->group(static function(Router $router) {
+            $router->middleware('auth:api')->group(static function (Router $router) {
                 $router->get('email/verify/{id}', VerifyEmailController::class)
                        ->middleware('signed')
                        ->name('verification.verify');
@@ -56,7 +57,11 @@ class Tightrope
             });
         };
 
-        Route::group($options, fn(Router $router) => $callback($router));
+        if (isset($options['domain'])) {
+            Route::domain($options['domain'])->group(fn(Router $router) => $callback($router));
+        } else {
+            Route::group($options, fn(Router $router) => $callback($router));
+        }
     }
 
     /**
