@@ -5,6 +5,7 @@ namespace ShabuShabu\Tightrope\Tests\Support;
 use Illuminate\Routing\Router;
 use Laravel\Passport\PassportServiceProvider;
 use ShabuShabu\Tightrope\Tests\App\Providers\AppServiceProvider;
+use ShabuShabu\Tightrope\Tests\App\User;
 use ShabuShabu\Tightrope\TightropeServiceProvider;
 
 trait AppSetup
@@ -35,6 +36,7 @@ trait AppSetup
         $this->setupRouting($app['router']);
 
         $app['config']->set('auth.guards.api.driver', 'passport');
+        $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('hashing.driver', 'bcrypt');
     }
 
