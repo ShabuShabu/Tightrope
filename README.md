@@ -27,10 +27,8 @@ Tightrope will give you all the authentication routes you might need for your AP
 - Ensure that events aren't being fired twice
 - Pull email verification from BTTs
 - Add config descriptions
-- Make repo public
-- Publish to Packagist
 - Journey to the center of Mars
-
+s
 ## Installation
 
 You can install the package via composer (:bangbang: at least once it has been published to Packagist...):
