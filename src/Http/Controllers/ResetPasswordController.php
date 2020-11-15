@@ -19,7 +19,7 @@ class ResetPasswordController
     public function __invoke(Request $request): Response
     {
         $formRequest = config('tightrope.requests.reset_password');
-        $request     = $formRequest::createFromBase($request);
+        $request     = $formRequest::createFromBase($request)->setContainer(app());
 
         $request->validateResolved();
 
