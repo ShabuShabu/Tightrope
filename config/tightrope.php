@@ -12,4 +12,6 @@ return [
         'send_password'  => EmailPasswordRequest::class,
         'reset_password' => ResetPasswordRequest::class,
     ],
+    'user_model'             => env('TIGHTROPE_MODEL'),
+    'redirect_after_verify'  => env('TIGHTROPE_REDIRECT'),
 ];
