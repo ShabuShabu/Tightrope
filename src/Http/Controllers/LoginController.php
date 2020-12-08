@@ -7,8 +7,8 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Http\{JsonResponse, Response};
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Psr\Http\Message\ServerRequestInterface;
-use function ShabuShabu\Tightrope\{to_camel_case};
 use Symfony\Component\HttpFoundation\Cookie;
+use function ShabuShabu\Tightrope\{to_camel_case};
 
 class LoginController
 {
