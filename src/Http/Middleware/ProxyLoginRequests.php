@@ -46,6 +46,10 @@ class ProxyLoginRequests
     {
         $usernameField = config('tightrope.username_field');
 
+        if (! $this->isEmailVerified($usernameField)) {
+            abort(403, 'email.unverified');
+        }
+
         $fields = [
             'username'      => $this->request->input($usernameField),
             'grant_type'    => 'password',
@@ -57,7 +61,32 @@ class ProxyLoginRequests
             $this->setJson($key, $value);
         }
 
-        optional($this->request->json())->remove($usernameField);
+        if ($usernameField !== 'username') {
+            optional($this->request->json())->remove($usernameField);
+        }
+    }
+
+    /**
+     * @param string $usernameField
+     * @return bool
+     */
+    protected function isEmailVerified(string $usernameField): bool
+    {
+        $credentials = [
+            $usernameField => $this->request->input($usernameField),
+            'password'     => $this->request->input('password'),
+        ];
+
+        if (auth()->once($credentials)) {
+            $user = auth()->user();
+
+            if ($user && method_exists($user, 'hasVerifiedEmail')) {
+                return $user->hasVerifiedEmail();
+            }
+        }
+
+        // Let the auth server handle the rest
+        return true;
     }
 
     /**
