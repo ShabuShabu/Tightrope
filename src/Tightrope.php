@@ -29,7 +29,7 @@ class Tightrope
      */
     public static function routes($callback = null, array $options = []): void
     {
-        $callback = $callback ?: static function(Router $router) {
+        $callback = $callback ?: static function (Router $router) {
             $router->post('register', RegisterController::class)
                    ->middleware('guest')
                    ->name('register');
@@ -48,12 +48,12 @@ class Tightrope
                    ->middleware('signed')
                    ->name('verification.verify');
 
-            $router->middleware('auth:api')->group(static function(Router $router) {
+            $router->post('logout', LogoutController::class)
+                   ->name('logout');
+
+            $router->middleware('auth:api')->group(static function (Router $router) {
                 $router->post('email/resend', ResendVerificationEmailController::class)
                        ->name('verification.resend');
-
-                $router->post('logout', LogoutController::class)
-                       ->name('logout');
             });
         };
 
